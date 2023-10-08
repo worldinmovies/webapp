@@ -1,0 +1,17 @@
+{
+  "short_name": "World in Movies",
+  "name": "The World in Movies",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8ACBFD",
+  "background_color": "#CCE1F5",
+  "description": "At Worldinmovies, we're passionate about helping movie lovers discover foreign films from around the world.\nWith our user-friendly platform, you can easily explore new cultures and expand your horizons through the magic of cinema.\nJoin us on a journey of discovery and let the power of film transport you to new places and perspectives!",
+  "keywords": ["movies", "foreign", "worldmap", "movie discovery"]
+}

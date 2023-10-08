@@ -1,0 +1,70 @@
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-left: 44%;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: #f5d450;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+
+}
+
+
+#earth {
+    display: none; /* Hidden by default */
+    z-index: 1; /* Sit on top */
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0); /* Black w/ opacity */
+    width: 300px;
+    height: 300px;
+    background: url(../../public/Earth-Color4096.jpeg);
+    border-radius: 50%;
+    background-size: 610px;
+    box-shadow: inset 8px 36px 80px 36px rgb(0, 0, 0), inset -6px 0 12px 4px rgba(255, 255, 255, 0.3);
+    animation-name: rotate;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 7s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+@keyframes rotate {
+    from {
+        background-position: 0px 0px;
+    }
+    to {
+        background-position: 610px 0px;
+    }
+}
+@-webkit-keyframes rotate {
+    from {
+        background-position: 0px 0px;
+    }
+    to {
+        background-position: 610px 0px;
+    }
+}

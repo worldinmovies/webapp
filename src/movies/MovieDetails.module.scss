@@ -1,0 +1,294 @@
+.container {
+  padding: 0 clamp(24px, 5vw, 80px);
+  display: grid;
+  grid-template-columns: clamp(160px, 30%, 320px) clamp(160px, 50%, 800px);
+  grid-gap: 16px;
+  align-items: normal;
+  grid-template-areas:
+  "title title"
+  "poster produced_by"
+  "poster plot"
+  "poster directors"
+  "poster writers"
+  "poster ratings"
+  "poster seenit"
+  "eng_title eng_title"
+  "runtime ."
+  "genres ."
+  "details-section ."
+  "details details";
+}
+
+.poster {
+  grid-area: poster;
+  aspect-ratio: 16/9;
+
+  img {
+    width: 100%;
+  }
+}
+
+.countries {
+  grid-area: produced_by;
+  display: flex;
+  gap: 8px;
+}
+
+.title {
+  grid-area: title;
+  font-size: 2rem;
+
+  padding: 8px 16px;
+  margin: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  align-items: center;
+  width: fit-content;
+}
+
+.eng_title {
+  grid-area: eng_title;
+  font-size: 1.2rem;
+  width: fit-content;
+}
+
+.plot {
+  grid-area: plot;
+}
+
+.directors {
+  grid-area: directors;
+}
+
+.writers {
+  grid-area: writers;
+}
+
+.ratings {
+  grid-area: ratings;
+}
+
+.rating {
+  border: var(--accent);
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 3px;
+  height: fit-content;
+  padding: 4px 4px;
+}
+
+.button {
+  box-shadow: 2px 2px 2px var(--text-color);
+  cursor: pointer;
+  background: var(--accent);
+  padding: 8px 8px;
+  width: fit-content;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.bold {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+
+  h4 {
+    margin: 8px 0;
+  }
+
+  .notbold {
+    margin: 8px 0;
+  }
+}
+
+.seenit {
+  grid-area: seenit;
+  gap: 4px;
+  display: flex;
+  align-self: center;
+  justify-self: flex-start;
+
+  svg {
+    height: 18px;
+    width: 24px;
+  }
+}
+
+.genres {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  .button {
+    background: var(--complement);
+  }
+}
+
+.seen {
+  box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.runtime {
+  grid-area: runtime;
+}
+
+.genres {
+  grid-area: genres;
+}
+
+.detailsContainer {
+  grid-area: details-section;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.detailsContainer > .detailHeader:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+.isActive {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+.detailsContent {
+  grid-area: details;
+
+  .horizontalDetails {
+    display: flex;
+    flex: auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: clamp(8px, 3%, 40px);
+
+    .values {
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+
+      h4 {
+        margin: 8px 0;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .value {
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      margin-bottom: 4px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--accent);
+      align-items: center;
+      height: fit-content;
+      width: fit-content;
+    }
+  }
+
+  .verticalDetails {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+
+    .values {
+      display: flex;
+      flex-direction: row;
+      height: fit-content;
+
+      h4 {
+        margin: 8px 0;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .value {
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      margin: 2px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: var(--accent);
+      align-items: center;
+      height: fit-content;
+      width: fit-content;
+    }
+  }
+}
+
+.castPage {
+  .values {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: fit-content;
+    justify-content: flex-start;
+
+    .value {
+      width: 100px;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+
+      h4 {
+        font-size: 1rem;
+      }
+
+      div {
+        font-size: 1rem;
+      }
+
+      img{
+        border-radius: 24px;
+        aspect-ratio: 2/3;
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: repeat(auto-fit, 1fr);
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-template-areas:
+    "title title"
+    "poster plot"
+    "eng_title eng_title"
+    "produced_by seenit"
+    "genres genres"
+    "runtime ."
+    "directors ."
+    "writers ratings"
+    "details-section ."
+    "details details";
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .eng_title {
+    font-size: 1rem;
+  }
+
+  .seenit {
+    justify-self: end;
+  }
+}

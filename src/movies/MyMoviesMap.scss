@@ -1,0 +1,17 @@
+.jvectormap-region {
+    stroke: var(--blue3);
+    stroke-width: 1;
+}
+
+.map-container {
+    position: relative;
+    z-index: 0;
+}
+
+#mappy {
+    width: 100%;
+    height: 90vh;
+}
+
+
+
