@@ -16,7 +16,7 @@ import Header from "./Header";
 import * as Sentry from "@sentry/react";
 
 
-const sentryDsn = import.meta.env.REACT_SENTRY_API;
+const sentryDsn = import.meta.env.REACT_APP_SENTRY_API;
 if (sentryDsn !== undefined) {
     Sentry.init({
         dsn: sentryDsn,
@@ -37,7 +37,7 @@ if (sentryDsn !== undefined) {
 
         // Set tracesSampleRate to 1.0 to capture 100%
         // of transactions for performance monitoring.
-        tracesSampleRate: 1.0,
+        tracesSampleRate: 0.1,
 
         // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
         //tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
