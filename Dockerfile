@@ -21,7 +21,6 @@ RUN npm install --silent --production
 ADD public/ /app/public/
 ADD src/ /app/src/
 
-RUN ls -lh .
 RUN npm run build
 
 

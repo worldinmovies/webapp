@@ -19,3 +19,7 @@ npm run build && serve -s build
 
 npm run test
 ```
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t seppaleinen/worldinmovies_webapp:latest .
+```

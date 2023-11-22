@@ -42,7 +42,7 @@ export default class MovieStore implements StoreType {
         return Object.values(this.myMovies)
             .flatMap(a => a)
             .some(a => {
-                return movieId === a.id;
+                return movieId === a._id;
             });
     }
 
@@ -55,7 +55,7 @@ export default class MovieStore implements StoreType {
     removeSeen(countries: string[], movieId: number) {
         countries.forEach(country => {
             this.myMovies[country] = this.myMovies[country]
-                .filter(movie => movie.id !== movieId);
+                .filter(movie => movie._id !== movieId);
         });
     }
 
@@ -64,7 +64,7 @@ export default class MovieStore implements StoreType {
         countries.forEach(country => {
             let movies = this.myMovies[country] ? this.myMovies[country] : [];
             movies.push({
-                "id": movie.id,
+                "_id": movie._id,
                 "imdb_id": movie.imdb_id,
                 "original_title": movie.original_title,
                 "release_date": movie.release_date,
