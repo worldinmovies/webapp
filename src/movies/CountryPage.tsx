@@ -12,7 +12,7 @@ import {closeIcon, filterIcon} from "../Svgs";
 import Select from 'react-select';
 
 const limit = 20;
-const neoUrl = import.meta.env.REACT_APP_NEO_URL === undefined ? '/neo' : import.meta.env.REACT_APP_NEO_URL;
+const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
 
 const sortMovies = () => {
     return (a: Movie, b: Movie) => {
@@ -69,7 +69,7 @@ const CountryPage = inject('movieStore')
         const genres = chosenGenres.length > 0 ? `&genres=${chosenGenres}` : "";
         if (toggleRankedMovies === 'best') {
             setFetching(true);
-            fetch(`${neoUrl}/view/best/${params.countryCode!.toUpperCase()}?skip=${skip}&limit=${limit}${genres}`,
+            fetch(`${tmdbUrl}/view/best/${params.countryCode!.toUpperCase()}?skip=${skip}&limit=${limit}${genres}`,
                 {
                     signal: AbortSignal.timeout(10000)
                 })
@@ -85,6 +85,7 @@ const CountryPage = inject('movieStore')
     };
 
     const handleResults = (result: any[]) => {
+        console.log(result);
         setSkip(skip + result.length);
         setMovies(prevState => prevState.concat(result));
         setHasMore(result.length >= limit);
@@ -102,7 +103,7 @@ const CountryPage = inject('movieStore')
                     {movies.length > 0 || !fetching ? movies
                         .sort(sortMovies())
                         .map((item: Movie) =>
-                            <Link to={`/movie/${item.id}`} key={item.id ? item.id : item.imdb_id}
+                            <Link to={`/movie/${item._id}`} key={item._id ? item._id : item.imdb_id}
                                   className={styles.movieCard}>
                                 {item.poster_path ? <img className={styles.poster}
                                                          src={`https://image.tmdb.org/t/p/w200/${item.poster_path}`}

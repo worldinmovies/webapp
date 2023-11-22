@@ -9,7 +9,7 @@ export interface Movie {
     alternative_titles?: any;
     spoken_languages?: any;
     production_companies?: any;
-    id: number;
+    _id: number;
     imdb_id: string;
     original_title: string;
     release_date: string;

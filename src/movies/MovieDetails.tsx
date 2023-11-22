@@ -9,7 +9,7 @@ import {Movie} from "../Types";
 const MovieDetails = inject('movieStore')
 (observer(({movieStore}: { movieStore?: MovieStore }) => {
     const params = useParams();
-    const tmdbUrl = import.meta.env.REACT_APP_TMDB_URL === undefined ? '/tmdb' : import.meta.env.REACT_APP_TMDB_URL;
+    const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
     const [movie, setMovie] = useState<any>()
     const [hasSeen, setHasSeen] = useState<boolean>(movieStore!.hasSeen(parseInt(params.movieId!)));
     const [active, setActive] = useState("Details");
@@ -18,7 +18,8 @@ const MovieDetails = inject('movieStore')
         fetch(`${tmdbUrl}/movie/${params.movieId}`)
             .then(response => response.json())
             .then(json => setMovie(json[0]))
-            .catch(error => console.error(error));
+            .catch(error => console.error(error))
+            .finally(() => console.log(movie));
     }, [params, tmdbUrl]);
 
     const toggleSeenButton = () => {
@@ -49,7 +50,7 @@ const MovieDetails = inject('movieStore')
     if (movie) {
         return (
             <div className={styles.container}>
-                <h1 className={styles.title}>{`${movie.original_title} (${movie.release_date.slice(0, 4)})`}</h1>
+                <h1 className={styles.title}>{`${movie.original_title} (${movie.release_date})`}</h1>
                 {movie.title !== movie.original_title ?
                     <div className={`${styles.title} ${styles.eng_title}`}>´{movie.title}´</div>
                     : null
@@ -60,10 +61,10 @@ const MovieDetails = inject('movieStore')
                 <div className={styles.countries}>
                     {movie.production_countries
                         .map((item: any) => {
-                            let iso = item.iso_3166_1 === 'US' ? 'USA' : item.name
+                            let iso = item.iso === 'US' ? 'USA' : item.name
                             return <Link key={iso}
                                          className={`${styles.button}`}
-                                         to={`/country/${item.iso_3166_1}`}>{iso}
+                                         to={`/country/${item.iso}`}>{iso}
                             </Link>
                         })}
                 </div>
@@ -108,10 +109,7 @@ const MovieDetails = inject('movieStore')
 
                 <div className={styles.genres}>
                     {movie.genres
-                        .map((a: any) => {
-                            return a.name
-                        })
-                        .map((a: any) => {
+                        .map((a: string) => {
                             return <div key={a} className={styles.button}>{a}</div>
                         })}
                 </div>
@@ -152,7 +150,7 @@ const createDetailsPage = (movie: Movie) => {
             <div>
                 {movie.spoken_languages
                     .map((item: any) => {
-                        return <div className={`${styles.value}`} key={item.iso_639_1}>{item.name}</div>
+                        return <div className={`${styles.value}`} key={item.iso}>{item.name}</div>
                     })}
             </div>
         </div>
