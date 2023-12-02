@@ -1,14 +1,14 @@
-import React, {Ref, useCallback, useEffect, useState} from 'react';
-import {inject, observer} from "mobx-react";
-import {Movie, MyMovie} from "../Types";
-import MovieStore, {StoreType} from "../stores/MovieStore";
+import React, { Ref, useCallback, useEffect, useState } from 'react';
+import { inject, observer } from "mobx-react";
+import { Movie, MyMovie } from "../Types";
+import MovieStore, { StoreType } from "../stores/MovieStore";
 import styles from './CountryPage.module.scss';
-import {Link} from "react-router-dom";
-import {useParams} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import customWorldMapJson from './countrycodes.json';
 import genresJson from './genres.json';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {closeIcon, filterIcon} from "../Svgs";
+import { closeIcon, filterIcon } from "../Svgs";
 import Select from 'react-select';
 
 const limit = 20;
@@ -16,10 +16,10 @@ const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.m
 
 const sortMovies = () => {
     return (a: Movie, b: Movie) => {
-        if (a.weight > b.weight) return -1;
-        if (a.weight > b.weight) return 1;
+        if (a.weighted_rating > b.weighted_rating) return 1;
+        if (a.weighted_rating < b.weighted_rating) return -1;
         // If weight is the same. sort on votecount
-        return a.vote_count > b.vote_count ? -1 : 1;
+        return a.vote_count > b.vote_count ? 1 : -1;
     };
 }
 
@@ -71,21 +71,20 @@ const CountryPage = inject('movieStore')
             setFetching(true);
             fetch(`${tmdbUrl}/view/best/${params.countryCode!.toUpperCase()}?skip=${skip}&limit=${limit}${genres}`,
                 {
-                    signal: AbortSignal.timeout(10000)
+                    signal: AbortSignal.timeout(10000),
                 })
                 .then(resp => resp.json())
+                .then(resp => resp.sort(sortMovies()))
                 .then(response => handleResults(response))
-                .catch(error => console.log(error))
+                .catch(error => console.error(error))
                 .finally(() => setFetching(false));
         } else {
             handleResults(movieStore!.myMovies[params.countryCode!].slice()
-                .sort(sortMovies())
                 .slice(skip, (skip + limit)));
         }
     };
 
     const handleResults = (result: any[]) => {
-        console.log(result);
         setSkip(skip + result.length);
         setMovies(prevState => prevState.concat(result));
         setHasMore(result.length >= limit);
@@ -101,7 +100,6 @@ const CountryPage = inject('movieStore')
             >
                 <section className={styles.containingSection}>
                     {movies.length > 0 || !fetching ? movies
-                        .sort(sortMovies())
                         .map((item: Movie) =>
                             <Link to={`/movie/${item._id}`} key={item._id ? item._id : item.imdb_id}
                                   className={styles.movieCard}>
@@ -137,7 +135,7 @@ const CountryPage = inject('movieStore')
     const onChange = (newValue: any) => {
         setChosenGenres(prevState => {
             const newState = newValue.map((a: any) => Number(a.value));
-            if(newState !== prevState) {
+            if (newState !== prevState) {
                 setMovies([]);
                 setSkip(0);
                 setHasMore(true);

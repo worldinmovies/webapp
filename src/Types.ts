@@ -17,7 +17,7 @@ export interface Movie {
     vote_average: number;
     vote_count: number;
     en_title: string;
-    weight: number;
+    weighted_rating: number;
 }
 
 export interface MyMovie extends Movie {

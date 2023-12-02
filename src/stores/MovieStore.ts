@@ -72,7 +72,7 @@ export default class MovieStore implements StoreType {
                 "vote_average": movie.vote_average,
                 "vote_count": movie.vote_count,
                 "en_title": movie.en_title,
-                "weight": movie.weight,
+                "weighted_rating": movie.weighted_rating,
                 "personal_rating": ""
             })
             this.myMovies[country] = movies;
