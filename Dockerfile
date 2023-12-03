@@ -1,5 +1,5 @@
 # build environment
-FROM node:19-alpine as build
+FROM node:21-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json package-lock.json tsconfig.json vite.config.ts ./
