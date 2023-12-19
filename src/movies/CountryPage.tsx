@@ -16,10 +16,10 @@ const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.m
 
 const sortMovies = () => {
     return (a: Movie, b: Movie) => {
-        if (a.weighted_rating > b.weighted_rating) return 1;
-        if (a.weighted_rating < b.weighted_rating) return -1;
+        if (a.weighted_rating < b.weighted_rating) return 1;
+        if (a.weighted_rating > b.weighted_rating) return -1;
         // If weight is the same. sort on votecount
-        return a.vote_count > b.vote_count ? 1 : -1;
+        return a.vote_count < b.vote_count ? 1 : -1;
     };
 }
 

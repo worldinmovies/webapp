@@ -14,7 +14,7 @@ const Admin = () => {
             .then(response => response.json())
             .then(response => setStatus(response))
             .catch(error => console.error(error))
-        const matcher = tmdbUrl.match(/:\/\/([\w\\.]+)$/);
+        const matcher = tmdbUrl.match(/:\/\/(.+)/);
         const value = matcher !== null ? matcher[1] : tmdbUrl;
         const ws = new WebSocket(`${ws_scheme}://${value}/ws`);
         setBaseImport([])
