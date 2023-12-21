@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Admin.module.scss';
 
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
@@ -17,7 +17,7 @@ const Admin = () => {
         const matcher = tmdbUrl.match(/:\/\/(.+)/);
         const value = matcher !== null ? matcher[1] : tmdbUrl;
         const ws = new WebSocket(`${ws_scheme}://${value}/ws`);
-        setBaseImport([])
+        setBaseImport([]);
         ws.onmessage = (event) => {
             setBaseImport(prevState => [...prevState, event.data]);
         }
@@ -44,9 +44,12 @@ const Admin = () => {
                 <h2 onClick={() => handleClick('imdb')}
                     className={toggle === 'imdb' ? styles.activeToggle : styles.inactiveToggle}>IMDB</h2>
             </div>
-            <span
-                className={styles.status}>Fetched {status.fetched} out of {status.total} movies which is {status.percentageDone}%</span><br/>
-
+            <div>
+                <div
+                    className={styles.status}>Fetched {status.fetched} out of {status.total} movies which
+                    is {status.percentageDone}%
+                </div>
+            </div>
             <div className={styles.buttons}>
                 <div className={toggle === 'tmdb' ? styles.show : styles.hide}>
                     <button className="button" onClick={() => triggerImport(tmdbUrl + '/import/base')}>Import TMDB Base
