@@ -3,20 +3,23 @@ import styles from './Admin.module.scss';
 
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+const connectToWS = () => {
+    const matcher = tmdbUrl.match(/.*(:\d+).*/);
+    const value = matcher !== null ? matcher[1] : tmdbUrl;
+    return new WebSocket(`${ws_scheme}://${window.location.hostname}${value}/ws`);
+};
 
 const Admin = () => {
     const [status, setStatus] = useState({"fetched": 0, "total": 0, "percentageDone": 0});
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
+    const ws: WebSocket = connectToWS();
 
     useEffect(() => {
         fetch(`${tmdbUrl}/status`)
             .then(response => response.json())
             .then(response => setStatus(response))
             .catch(error => console.error(error))
-        const matcher = tmdbUrl.match(/:\/\/(.+)/);
-        const value = matcher !== null ? matcher[1] : tmdbUrl;
-        const ws = new WebSocket(`${ws_scheme}://${value}/ws`);
         setBaseImport([]);
         ws.onmessage = (event) => {
             setBaseImport(prevState => [...prevState, event.data]);
