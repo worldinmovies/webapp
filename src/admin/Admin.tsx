@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Admin.module.scss';
 
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
-const webappPort = import.meta.env.VITE_WEBAPP_PORT === undefined ? ':80' : import.meta.env.VITE_WEBAPP_PORT;
+const webappPort = import.meta.env.VITE_WEBAPP_PORT ? import.meta.env.VITE_WEBAPP_PORT : '';
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
 const connectToWS = () => {
     const matcher = tmdbUrl.match(/.*(:\d+).*/);
