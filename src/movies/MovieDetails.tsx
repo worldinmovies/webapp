@@ -18,8 +18,7 @@ const MovieDetails = inject('movieStore')
         fetch(`${tmdbUrl}/movie/${params.movieId}`)
             .then(response => response.json())
             .then(json => setMovie(json[0]))
-            .catch(error => console.error(error))
-            .finally(() => console.log(movie));
+            .catch(error => console.error(error));
     }, [params, tmdbUrl]);
 
     const toggleSeenButton = () => {
@@ -96,7 +95,7 @@ const MovieDetails = inject('movieStore')
                     <h4>Ratings: </h4>
                     <div className={`${styles.notbold} ${styles.rating}`}>
                         <div>TMDB</div>
-                        {`${Math.round(movie.vote_average * 10) / 10} / 10`}
+                        {`${(Math.round(movie.vote_average * 10) / 10).toFixed(1)} / 10`}
                     </div>
                 </div>
 

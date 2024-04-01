@@ -3,13 +3,14 @@ import { inject, observer } from "mobx-react";
 import { Movie, MyMovie } from "../Types";
 import MovieStore, { StoreType } from "../stores/MovieStore";
 import styles from './CountryPage.module.scss';
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import customWorldMapJson from './countrycodes.json';
 import genresJson from './genres.json';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { closeIcon, filterIcon } from "../Svgs";
 import Select from 'react-select';
+import { Loader } from '../components/Loader';
+import { CountryCard } from '../components/CountryCard';
 
 const limit = 20;
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
@@ -29,7 +30,6 @@ const CountryPage = inject('movieStore')
     const dialogRef: Ref<HTMLDialogElement> = React.createRef();
     const params = useParams();
 
-    const [fetching, setFetching] = useState<boolean>(true)
     const [toggleRankedMovies, setToggleRankedMovies] = useState<string>('best')
     const [movies, setMovies] = useState<Movie[]>([])
     const [skip, setSkip] = useState<number>(0);
@@ -68,7 +68,6 @@ const CountryPage = inject('movieStore')
     const fetchData = () => {
         const genres = chosenGenres.length > 0 ? `&genres=${chosenGenres}` : "";
         if (toggleRankedMovies === 'best') {
-            setFetching(true);
             fetch(`${tmdbUrl}/view/best/${params.countryCode!.toUpperCase()}?skip=${skip}&limit=${limit}${genres}`,
                 {
                     signal: AbortSignal.timeout(10000),
@@ -77,7 +76,6 @@ const CountryPage = inject('movieStore')
                 .then(resp => resp.sort(sortMovies()))
                 .then(response => handleResults(response))
                 .catch(error => console.error(error))
-                .finally(() => setFetching(false));
         } else {
             handleResults(movieStore!.myMovies[params.countryCode!].slice()
                 .slice(skip, (skip + limit)));
@@ -96,24 +94,13 @@ const CountryPage = inject('movieStore')
                 dataLength={movies.length}
                 next={() => fetchData()}
                 hasMore={hasMore}
-                loader={<h4>Loading...</h4>}
+                loader={<Loader/>}
             >
                 <section className={styles.containingSection}>
-                    {movies.length > 0 || !fetching ? movies
+                    {movies
                         .map((item: Movie) =>
-                            <Link to={`/movie/${item._id}`} key={item._id ? item._id : item.imdb_id}
-                                  className={styles.movieCard}>
-                                {item.poster_path ? <img className={styles.poster}
-                                                         src={`https://image.tmdb.org/t/p/w200/${item.poster_path}`}
-                                                         alt={item.en_title}/> : null}
-                                <div className={styles.movieCardText}>
-                                    <div>{item.original_title} {item.release_date ? "(" + item.release_date.slice(0, 4) + ")" : null}</div>
-                                    {item.en_title && item.en_title.trim() !== item.original_title.trim() ?
-                                        <div className={styles.englishTitle}>'{item.en_title}'</div> : null}
-                                    <div>{item.vote_average}</div>
-                                </div>
-                            </Link>
-                        ) : <div>Could not find any movies</div>}
+                            <CountryCard movie={item} key={item._id}/>
+                        )}
                 </section>
             </InfiniteScroll>
         );

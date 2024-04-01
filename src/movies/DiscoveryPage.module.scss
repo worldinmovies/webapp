@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  color: var(--text-color);
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 8px 8px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.containingSection {
+  padding: clamp(16px, 2.4vw, 24px) clamp(24px, 5vw, 80px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+
+@media (max-width: 768px) {
+}

@@ -1,0 +1,82 @@
+.movieCard {
+    border-radius: 8px;
+    cursor: pointer;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.poster {
+    width: 200px;
+    height: 300px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 2px 2px 2px var(--text-color);
+}
+
+.movieCardText {
+    background: var(--complement);
+    line-break: loose;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 2px 2px 2px var(--text-color);
+    position: relative;
+    padding: 8px 8px;
+
+    transition: 0.2s;
+    height: 40px;
+    overflow: hidden;
+    scroll-snap-align: start;
+}
+
+.movieCardText:hover {
+    margin-top: -200px;
+    transition: 0.8s;
+    height: 240px;
+    box-shadow: 0 1px 35px 0 #000;
+    overflow: scroll
+}
+
+.movieCardText div:not(.englishTitle) {
+    padding: 4px 8px;
+}
+
+.englishTitle {
+    background: var(--text-color);
+    color: var(--dominant);
+    position: relative;
+    left: 4px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.country {
+    text-decoration: underline;
+    padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+    .movieCard {
+        width: 200px;
+    }
+    .poster {
+        width: 200px;
+        height: 300px;
+    }
+
+    .englishTitle {
+        width: min-content;
+    }
+
+    .movieCardText {
+        font-size: smaller;
+        padding: 4px 0;
+    }
+
+    .movieCardText:hover,
+    .movieCardText:active {
+        margin-top: -100px;
+        transition: 0.8s;
+        height: 140px;
+        box-shadow: 0 1px 35px 0 #000;
+        overflow: scroll
+    }
+}

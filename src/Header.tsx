@@ -1,6 +1,8 @@
 import React from "react";
 import styles from './Header.module.scss';
 import {adminIcon, homeIcon, importMoviesIcon, worldMapIcon} from "./Svgs";
+import { Link } from 'react-router-dom';
+import MyMoviesMap from './movies/MyMoviesMap';
 
 const menuButton = () => {
     return <div id={"menu"} className={styles.subnav}>
@@ -49,6 +51,12 @@ const homeButton = () => {
     </a>
 }
 
+const aboutUsButton = () => {
+    return <a href={"/about-us"} className={`${styles.button}`}>
+        About us
+    </a>
+}
+
 
 const Header = () => {
     return (
@@ -62,6 +70,7 @@ const Header = () => {
                     <div className={styles.subnavContent}>
                         {importMoviesButton()}
                         {adminButton()}
+                        {aboutUsButton()}
                     </div>
                 </nav>
             </div>

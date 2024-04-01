@@ -1,0 +1,31 @@
+
+.movieCardText {
+    background: var(--complement);
+    line-break: loose;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 2px 2px 2px var(--text-color);
+    position: relative;
+    max-width: 200px;
+}
+
+.movieCardText div:not(.englishTitle) {
+    padding: 4px 8px;
+}
+
+.poster {
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px var(--text-color);
+}
+
+.englishTitle {
+    background: var(--text-color);
+    color: var(--dominant);
+    position: relative;
+    left: 4px;
+    border-radius: 4px;
+    width: fit-content;
+}

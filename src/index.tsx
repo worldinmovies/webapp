@@ -56,6 +56,7 @@ const TraktImport = lazy(() => import('./import/TraktImport'));
 const MyMoviesMap = lazy(() => import('./movies/MyMoviesMap'));
 const MovieDetails = lazy(() => import('./movies/MovieDetails'));
 const CountryPage = lazy(() => import('./movies/CountryPage'));
+const DiscoveryPage = lazy(() => import('./movies/DiscoveryPage'));
 const Admin = lazy(() => import('./admin/Admin'));
 
 
@@ -78,7 +79,8 @@ const Main = () => {
             <Provider {...stores}>
                 <BrowserRouter>
                     <SentryRoutes>
-                        <Route path="/" index element={wrapInSuspense(<Home/>)}/>
+                        <Route path="/about-us" index element={wrapInSuspense(<Home/>)}/>
+                        <Route path="/" index element={wrapInSuspense(<DiscoveryPage/>)}/>
                         <Route path="/map" element={wrapInSuspense(<MyMoviesMap/>)}/>
                         <Route path="/import" element={wrapInSuspense(<Import/>)}/>
                         <Route path="/import/trakt" element={wrapInSuspense(<TraktImport/>)}/>
