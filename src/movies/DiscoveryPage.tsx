@@ -49,6 +49,7 @@ const DiscoveryPage = () => {
                 next={() => fetchData()}
                 hasMore={true}
                 loader={<Loader/>}
+                style={{height: '100vh', overflow: "visible"}}
             >
                 <section className={styles.containingSection}>
                     {Array.from(movies)
