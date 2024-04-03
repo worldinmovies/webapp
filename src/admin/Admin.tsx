@@ -28,12 +28,19 @@ const Admin = () => {
         ws.onerror = (error) => {
             console.log(error)
         }
-    }, [toggle]);
+    }, []);
+
+    // Make timestamp look like backends: 2024-04-03 19:38:20.045935
+    const formatLog = (data: string, date = new Date()) => {
+        return `${date.toISOString()
+            .replace('T', ' ')
+            .replace('Z', '000')} - ADMIN\t- "${data}"`
+    }
 
     const triggerImport = (path: string) => {
         fetch(path)
-            .then(() => setBaseImport(prevState => [...prevState, `${path} called successfully`]))
-            .catch(error => setBaseImport(prevState => [...prevState, `Call to ${path} failed due to ${error}`]));
+            .then(() => setBaseImport(prevState => [...prevState, formatLog(`${path} called successfully`)]))
+            .catch(error => setBaseImport(prevState => [...prevState, formatLog(`Call to ${path} failed due to ${error}`)]));
     }
 
     const handleClick = (newState: string) => {
@@ -91,7 +98,7 @@ const Admin = () => {
             </div>
             <div className={styles.terminal}>
                 <div className={styles.content}>
-                    {baseImport.map((line, index) => <p key={index}>{line}</p>)}
+                    {baseImport.map((line, index) => <div key={index}>{line}</div>)}
                 </div>
             </div>
         </div>

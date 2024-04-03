@@ -5,7 +5,6 @@
 .terminal {
     background-color: var(--text-color);
     padding: 8px 16px;
-    height: 35vw;
 }
 
 .content {
@@ -13,8 +12,9 @@
     font-size: 12px;
     font-family: monospace;
     line-height: 4px;
+    min-height: calc(100vh - 290px);
 
-    p {
+    div {
         line-height: 16px;
     }
 }
