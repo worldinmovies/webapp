@@ -14,9 +14,10 @@ const Admin = () => {
     const [status, setStatus] = useState({"fetched": 0, "total": 0, "percentageDone": 0});
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
-    const ws: WebSocket = connectToWS();
 
     useEffect(() => {
+        const ws: WebSocket = connectToWS();
+
         fetch(`${tmdbUrl}/status`)
             .then(response => response.json())
             .then(response => setStatus(response))
@@ -28,6 +29,7 @@ const Admin = () => {
         ws.onerror = (error) => {
             console.log(error)
         }
+        return () => ws.close();
     }, []);
 
     // Make timestamp look like backends: 2024-04-03 19:38:20.045935
