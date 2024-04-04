@@ -19,6 +19,6 @@ COPY ./nginx/sites-enabled/app2.conf	/etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-HEALTHCHECK  --interval=5m --timeout=2s --start-period=3s --retries=0 CMD nc -v -w1 localhost 80
+HEALTHCHECK  --interval=1m --timeout=5s --start-period=3s --retries=2 CMD nc -v -w1 localhost 80
 
 CMD ["nginx", "-g", "daemon off;"]
