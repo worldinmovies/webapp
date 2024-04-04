@@ -66,13 +66,12 @@ jobs:
           digest="${{ steps.build.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: digests
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
-          overwrite: true
 
   merge:
     runs-on: ubuntu-latest
