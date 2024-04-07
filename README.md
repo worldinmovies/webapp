@@ -10,17 +10,14 @@ Second hand, show you which countries you've seen movies from and from which you
 ### Commands
 
 ```bash
-# Start server on :3000
-REACT_APP_BACKEND_URL=http://localhost:8000 REACT_APP_TMDB_URL=http://localhost:8020 REACT_APP_NEO_URL=http://localhost:8082 npm start
-npm run start
-
-# Build and serve on :5000
-npm run build && serve -s build
+# Build and serve on :3000
+VITE_TMDB_URL=http://localhost:8020 npm run start
 
 npm run test
 
 ```
 
+### Docker
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 -t seppaleinen/worldinmovies_webapp:latest .
 ```

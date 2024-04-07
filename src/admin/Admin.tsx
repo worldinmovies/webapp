@@ -4,9 +4,10 @@ import styles from './Admin.module.scss';
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
 const webappPort = import.meta.env.VITE_WEBAPP_PORT ? `:${import.meta.env.VITE_WEBAPP_PORT}` : '';
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
-const connectToWS = () => {
+const connectToWS = (worker: boolean) => {
     const matcher = tmdbUrl.match(/.*(:\d+).*/);
-    const value = matcher !== null ? matcher[1] : tmdbUrl;
+    let value = matcher !== null ? matcher[1] : tmdbUrl;
+    value = worker ? `${value}Worker` : value;
     return new WebSocket(`${ws_scheme}://${window.location.hostname}${webappPort}${value}/ws`);
 };
 
@@ -15,27 +16,45 @@ const Admin = () => {
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
 
+    const doTheStuff = (worker: boolean) => {
+        let ws;
+        try {
+            ws = connectToWS(false);
+            ws.onmessage = (event) => {
+                setBaseImport(prevState => [...prevState, event.data]
+                    .sort());
+            }
+            ws.onerror = (error) => {
+                console.log(error);
+            }
+        } catch (e) {
+            const workerMessage = worker ? 'tmdb-worker' : 'tmdb'
+            console.error(`Could not connect to ${workerMessage} websocket: ${e}`);
+            setBaseImport(prevState => [...prevState, formatLog(`Could not connect to ${workerMessage} websocket: ${e}`)])
+        }
+        return ws;
+    }
     useEffect(() => {
-        const ws: WebSocket = connectToWS();
+        const tmdbWs = doTheStuff(false);
+        const tmdbWorkerWs = doTheStuff(true);
 
+        setBaseImport([]);
         fetch(`${tmdbUrl}/status`)
             .then(response => response.json())
             .then(response => setStatus(response))
-            .catch(error => console.error(error))
-        setBaseImport([]);
-        ws.onmessage = (event) => {
-            setBaseImport(prevState => [...prevState, event.data]);
-        }
-        ws.onerror = (error) => {
-            console.log(error)
-        }
-        return () => ws.close();
+            .catch(error => {
+                console.error(error);
+                setBaseImport(prevState => [...prevState, formatLog(`Call to ${tmdbUrl}/status failed due to ${error}`)])
+            })
+        return () => {
+            tmdbWs?.close();
+            tmdbWorkerWs?.close();
+        };
     }, []);
 
-    // Make timestamp look like backends: 2024-04-03 19:38:20.045935
+    // Make timestamp look like backends: 2024-04-03T19:38:20.045935
     const formatLog = (data: string, date = new Date()) => {
         return `${date.toISOString()
-            .replace('T', ' ')
             .replace('Z', '000')} - ADMIN\t- "${data}"`
     }
 
