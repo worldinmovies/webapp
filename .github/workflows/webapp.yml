@@ -125,7 +125,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
           comment_downstream_url: Triggered by Webapp Workflow
-
+          client_payload: '{"trigger": "webapp"}'
 
   deploy:
     runs-on: ubuntu-latest
@@ -144,4 +144,6 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-          comment_downstream_url: Triggered by IMDB Workflow
+          comment_downstream_url: Triggered by Webapp Workflow
+          client_payload: '{"trigger": "webapp"}'
+
