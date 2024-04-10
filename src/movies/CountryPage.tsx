@@ -95,6 +95,7 @@ const CountryPage = inject('movieStore')
                 next={() => fetchData()}
                 hasMore={hasMore}
                 loader={<Loader/>}
+                style={{height: '100vh', overflow: "visible"}}
             >
                 <section className={styles.containingSection}>
                     {movies

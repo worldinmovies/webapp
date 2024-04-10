@@ -21,7 +21,7 @@
 
     transition: height 0.2s ease-in-out;
     height: 40px;
-    overflow: auto;
+    overflow: hidden;
     scroll-snap-align: start;
     position: absolute;
     bottom: 0;
