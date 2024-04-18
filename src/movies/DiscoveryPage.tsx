@@ -16,7 +16,7 @@ export interface DiscoveryMovie {
     vote_count: number,
     imdb_vote_average: number,
     imdb_vote_count: number
-    guessed_countries: string[]
+    guessed_country: string
 }
 
 const DiscoveryPage = () => {

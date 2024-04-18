@@ -21,17 +21,15 @@ export const DiscoveryCard = (props: { movie: DiscoveryMovie }) => {
 
     return (
         <div onClick={(e) => buttonLink(e)}
-                className={styles.movieCard}>
+             className={styles.movieCard}>
             <img className={styles.poster}
                  src={posterPath}
                  alt={movie.original_title}/>
             <div className={styles.movieCardText}>
-                {movie.guessed_countries.map(country =>
-                    <Link className={styles.country}
-                          to={`/country/${country}`}
-                          key={movie._id + country}>{regionNames.of(country)}
-                    </Link>
-                )}
+                <Link className={styles.country}
+                      to={`/country/${movie.guessed_country}`}
+                      key={movie._id + movie.guessed_country}>{regionNames.of(movie.guessed_country)}
+                </Link>
                 <div>{movie.original_title}</div>
                 <hr/>
                 <div>{movie.overview}</div>
