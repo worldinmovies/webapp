@@ -10,14 +10,14 @@ const MovieDetails = inject('movieStore')
 (observer(({movieStore}: { movieStore?: MovieStore }) => {
     const params = useParams();
     const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
-    const [movie, setMovie] = useState<any>()
+    const [movie, setMovie] = useState<Movie>()
     const [hasSeen, setHasSeen] = useState<boolean>(movieStore!.hasSeen(parseInt(params.movieId!)));
     const [active, setActive] = useState("Details");
 
     useEffect(() => {
         fetch(`${tmdbUrl}/movie/${params.movieId}`)
             .then(response => response.json())
-            .then(json => setMovie(json[0]))
+            .then((json: Movie[]) => setMovie(json[0]))
             .catch(error => console.error(error));
     }, [params, tmdbUrl]);
 
@@ -25,11 +25,13 @@ const MovieDetails = inject('movieStore')
         setHasSeen(!hasSeen);
         let store = movieStore!;
         let movieId: number = parseInt(params.movieId!);
-        let countries = movie.production_countries.map((a: any) => a.iso_3166_1)
-        if (hasSeen) {
-            store.removeSeen(countries, movieId);
-        } else {
-            store.addSeen(countries, movie);
+        if (movie !== undefined) {
+            let countries = movie.production_countries.map((a: any) => a.iso_3166_1)
+            if (hasSeen) {
+                store.removeSeen(countries, movieId);
+            } else {
+                store.addSeen(countries, movie);
+            }
         }
     }
 
@@ -108,8 +110,8 @@ const MovieDetails = inject('movieStore')
 
                 <div className={styles.genres}>
                     {movie.genres
-                        .map((a: string) => {
-                            return <div key={a} className={styles.button}>{a}</div>
+                        .map((a: any) => {
+                            return <div key={a._id} className={styles.button}>{a.name}</div>
                         })}
                 </div>
 
@@ -139,8 +141,8 @@ const createDetailsPage = (movie: Movie) => {
             <h4>Studios: </h4>
             <div>
                 {movie.production_companies
-                    .map((item: any) => {
-                        return <div className={`${styles.value}`} key={item.id}>{item.name}</div>
+                    .map((item: any, i: any) => {
+                        return <div className={`${styles.value}`} key={i}>{item.name}</div>
                     })}
             </div>
         </div>
@@ -148,8 +150,8 @@ const createDetailsPage = (movie: Movie) => {
             <h4>Languages: </h4>
             <div>
                 {movie.spoken_languages
-                    .map((item: any) => {
-                        return <div className={`${styles.value}`} key={item.iso}>{item.name}</div>
+                    .map((item: any, i: any) => {
+                        return <div className={`${styles.value}`} key={i}>{item.name}</div>
                     })}
             </div>
         </div>
@@ -157,9 +159,9 @@ const createDetailsPage = (movie: Movie) => {
             <h4>Alternative titles: </h4>
             <div>
                 {movie.alternative_titles.titles
-                    .map((item: any) => {
+                    .map((item: any, i: any) => {
                         return <div className={`${styles.value}`}
-                                    key={`${item.iso_3166_1}-${item.title}`}>{item.title}</div>
+                                    key={i}>{item.title}</div>
                     })}
             </div>
         </div>
@@ -171,8 +173,8 @@ const createCastPage = (movie: Movie) => {
         <div className={`${styles.values}`}>
             {movie.credits.cast
                 .sort((a: any, b: any) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
-                .map((item: any) => {
-                    return <div className={`${styles.value}`} key={item.credit_id}>
+                .map((item: any, i: any) => {
+                    return <div className={`${styles.value}`} key={i}>
                         <div>
                             {item.profile_path ? <img src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`}
                                                       alt={item.name}/> : null}
@@ -194,8 +196,8 @@ const createCrewDiv = (title: string, jobTitle: string, groupedCrew: Record<stri
         <h4>{`${title}: `}</h4>
         <div>
             {groupedCrew[jobTitle] ? groupedCrew[jobTitle]
-                .map((item: any) => {
-                    return <div className={`${styles.value}`} key={item.credit_id}>{item.name}</div>
+                .map((item: any, i: any) => {
+                    return <div className={`${styles.value}`} key={i}>{item.name}</div>
                 }) : null}
         </div>
     </div>;
@@ -222,8 +224,8 @@ const createCrewPage = (movie: Movie) => {
                 {Object.values(groupedCrew)
                     .flatMap(a => a)
                     .filter(value => ['Sound Designer', 'Sound Recordist', 'Sound Editor', 'Sound Re-Recording Mixer', 'Sound Engineer'].includes(value.job))
-                    .map((item: any) => {
-                        return <div className={`${styles.value}`} key={item.credit_id}>{item.name}</div>
+                    .map((item: any, i: any) => {
+                        return <div className={`${styles.value}`} key={i}>{item.name}</div>
                     })}
             </div>
         </div>

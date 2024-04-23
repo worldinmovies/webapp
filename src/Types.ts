@@ -8,9 +8,14 @@ export interface Movie {
     credits?: any;
     alternative_titles?: any;
     spoken_languages?: any;
+    production_countries?: any;
     production_companies?: any;
     _id: number;
     imdb_id: string;
+    title: string;
+    overview: string;
+    runtime: string;
+    genres: any;
     original_title: string;
     release_date: string;
     poster_path: string;

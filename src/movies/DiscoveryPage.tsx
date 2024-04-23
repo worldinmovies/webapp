@@ -34,7 +34,7 @@ const DiscoveryPage = () => {
 
     const fetchData = () => {
         fetch(`${tmdbUrl}/view/random/best/${fetched}?limit=20`, {
-            signal: AbortSignal.timeout(10000),
+            signal: AbortSignal.timeout(20000),
         })
             .then(resp => resp.json())
             .then(response => handleResults(response))
