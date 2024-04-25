@@ -25,7 +25,21 @@ export interface Movie {
     weighted_rating: number;
 }
 
-export interface MyMovie extends Movie {
+export interface MyMovie {
+    credits?: any;
+    alternative_titles?: any;
+    spoken_languages?: any;
+    production_countries?: any;
+    production_companies?: any;
+    _id: number;
+    imdb_id: string;
+    original_title: string;
+    release_date: string;
+    poster_path: string;
+    vote_average: number;
+    vote_count: number;
+    en_title: string;
+    weighted_rating: number;
     personal_rating: string;
 }
 
