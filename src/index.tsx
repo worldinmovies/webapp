@@ -16,21 +16,18 @@ import Header from "./Header";
 import * as Sentry from "@sentry/react";
 
 
-const sentryDsn = import.meta.env.VITE_SENTRY_API;
+const sentryDsn = import.meta.env.VITE_SENTRY_WEB;
 if (sentryDsn !== undefined) {
+    console.log("Initializing Sentry")
     Sentry.init({
         dsn: sentryDsn,
         integrations: [
-            new Sentry.BrowserTracing({
-                // See docs for support of different versions of variation of react router
-                // https://docs.sentry.io/platforms/javascript/guides/react/configuration/integrations/react-router/
-                routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-                    React.useEffect,
-                    useLocation,
-                    useNavigationType,
-                    createRoutesFromChildren,
-                    matchRoutes
-                ),
+            Sentry.reactRouterV6BrowserTracingIntegration({
+                useEffect: React.useEffect,
+                useLocation,
+                useNavigationType,
+                createRoutesFromChildren,
+                matchRoutes,
             }),
             new Sentry.Replay()
         ],
