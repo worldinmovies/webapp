@@ -28,7 +28,7 @@ const DiscoveryPage = () => {
     }, []);
 
     const handleResults = (result: DiscoveryMovie[]) => {
-        setFetched(prevState => prevState + result.length);
+        setFetched(prevState => prevState + Math.ceil(result.length / 10) * 10);
         setMovies(prevState => new Set<DiscoveryMovie>([...prevState, ...result]));
     }
 
@@ -54,7 +54,7 @@ const DiscoveryPage = () => {
                 <section className={styles.containingSection}>
                     {Array.from(movies)
                         .map((item: DiscoveryMovie) =>
-                            <DiscoveryCard movie={item} key={item._id}/>
+                            <DiscoveryCard movie={item} key={`${item._id}-${Math.floor(Math.random() * (99 - 1 + 1) + 1)}`}/>
                         )}
                 </section>
             </InfiniteScroll>
