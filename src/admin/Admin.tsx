@@ -4,10 +4,10 @@ import styles from './Admin.module.scss';
 const tmdbUrl = import.meta.env.VITE_TMDB_URL === undefined ? '/tmdb' : import.meta.env.VITE_TMDB_URL;
 const webappPort = import.meta.env.VITE_WEBAPP_PORT ? `:${import.meta.env.VITE_WEBAPP_PORT}` : '';
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
-const connectToWS = (worker: boolean) => {
+const connectToWS = () => {
     const matcher = tmdbUrl.match(/.*(:\d+).*/);
     let value = matcher !== null ? matcher[1] : tmdbUrl;
-    value = worker ? `${value}Worker` : value;
+    console.log(`Connecting to: ${value} based on ${value}`)
     return new WebSocket(`${ws_scheme}://${window.location.hostname}${webappPort}${value}/ws`);
 };
 
@@ -16,27 +16,27 @@ const Admin = () => {
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
 
-    const doTheStuff = (worker: boolean) => {
-        let ws;
+    const doTheStuff = () => {
         try {
-            ws = connectToWS(false);
+            const ws = connectToWS();
             ws.onmessage = (event) => {
                 setBaseImport(prevState => [...prevState, event.data]
-                    .sort());
+                    .sort()
+                    .reverse()
+                    .slice(0, 1000)
+                    .reverse());
             }
             ws.onerror = (error) => {
                 console.log(error);
             }
+            return ws;
         } catch (e) {
-            const workerMessage = worker ? 'tmdb-worker' : 'tmdb'
-            console.error(`Could not connect to ${workerMessage} websocket: ${e}`);
-            setBaseImport(prevState => [...prevState, formatLog(`Could not connect to ${workerMessage} websocket: ${e}`)])
+            console.error(`Could not connect to tmdb websocket: ${e}`);
+            setBaseImport(prevState => [...prevState, formatLog(`Could not connect to tmdb websocket: ${e}`)])
         }
-        return ws;
     }
     useEffect(() => {
-        const tmdbWs = doTheStuff(false);
-        const tmdbWorkerWs = doTheStuff(true);
+        const tmdbWs = doTheStuff();
 
         setBaseImport([]);
         fetch(`${tmdbUrl}/status`)
@@ -48,7 +48,6 @@ const Admin = () => {
             })
         return () => {
             tmdbWs?.close();
-            tmdbWorkerWs?.close();
         };
     }, []);
 
