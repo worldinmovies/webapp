@@ -15,18 +15,27 @@ const Admin = () => {
     const [status, setStatus] = useState({"fetched": 0, "total": 0, "percentageDone": 0});
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
+    const myRef = React.useRef<HTMLDivElement>(null);
+
+    const handleNewLines = (data: string) => {
+        setBaseImport(prevState => [...prevState, data]
+            .sort()
+            .reverse()
+            .slice(0, 1000)
+            .reverse());
+        if (myRef.current) {
+            myRef.current.scrollTop = myRef.current.scrollHeight;
+        }
+    }
 
     const doTheStuff = () => {
         try {
             const ws = connectToWS();
             ws.onmessage = (event) => {
-                setBaseImport(prevState => [...prevState, event.data]
-                    .sort()
-                    .reverse()
-                    .slice(0, 1000)
-                    .reverse());
+                handleNewLines(event.data);
             }
             ws.onerror = (error) => {
+                handleNewLines(JSON.stringify(error));
                 console.log(error);
             }
             return ws;
@@ -59,8 +68,8 @@ const Admin = () => {
 
     const triggerImport = (path: string) => {
         fetch(path)
-            .then(() => setBaseImport(prevState => [...prevState, formatLog(`${path} called successfully`)]))
-            .catch(error => setBaseImport(prevState => [...prevState, formatLog(`Call to ${path} failed due to ${error}`)]));
+            .then(() => handleNewLines(formatLog(`${path} called successfully`)))
+            .catch(error => handleNewLines(formatLog(`Call to ${path} failed due to ${error}`)));
     }
 
     const handleClick = (newState: string) => {
@@ -116,7 +125,7 @@ const Admin = () => {
                     </button>
                 </div>
             </div>
-            <div className={styles.terminal}>
+            <div ref={myRef} className={styles.terminal}>
                 <div className={styles.content}>
                     {baseImport.map((line, index) => <div key={index}>{line}</div>)}
                 </div>

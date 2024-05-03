@@ -5,6 +5,9 @@
 .terminal {
     background-color: var(--text-color);
     padding: 8px 16px;
+    width: calc(100vw - 80px);
+    height: 65dvh;
+    overflow-y: scroll;
 }
 
 .content {
@@ -12,7 +15,6 @@
     font-size: 12px;
     font-family: monospace;
     line-height: 4px;
-    min-height: calc(100vh - 290px);
 
     div {
         line-height: 16px;
