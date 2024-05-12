@@ -158,11 +158,13 @@ const createDetailsPage = (movie: Movie) => {
         <div className={`${styles.values}`}>
             <h4>Alternative titles: </h4>
             <div>
-                {movie.alternative_titles.titles
-                    .map((item: any, i: any) => {
-                        return <div className={`${styles.value}`}
-                                    key={i}>{item.title}</div>
-                    })}
+                {
+                    [...new Set(movie.alternative_titles?.titles.map(a => a.title))]
+                        .map((item: any, i: any) => {
+                            return <div className={`${styles.value}`}
+                                        key={i}>{item}</div>
+                        })
+                }
             </div>
         </div>
     </div>
