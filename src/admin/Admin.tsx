@@ -11,8 +11,13 @@ const connectToWS = () => {
     return new WebSocket(`${ws_scheme}://${window.location.hostname}${webappPort}${value}/ws`);
 };
 
+interface Status {
+    "fetched": string,
+    "total": string,
+    "percentageDone": string
+}
 const Admin = () => {
-    const [status, setStatus] = useState({"fetched": 0, "total": 0, "percentageDone": 0});
+    const [status, setStatus] = useState<Status>();
     const [baseImport, setBaseImport] = useState<string[]>([]);
     const [toggle, setToggle] = useState<string>("tmdb")
     const myRef = React.useRef<HTMLDivElement>(null);
@@ -86,8 +91,8 @@ const Admin = () => {
             </div>
             <div>
                 <div
-                    className={styles.status}>Fetched {status.fetched} out of {status.total} movies which
-                    is {status.percentageDone}%
+                    className={styles.status}>{status ? `Fetched ${status.fetched} out of ${status.total} movies which
+                    is ${status.percentageDone}%` : "Loading status"}
                 </div>
             </div>
             <div className={styles.buttons}>
