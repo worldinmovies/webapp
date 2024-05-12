@@ -14,7 +14,7 @@ const connectToWS = () => {
 interface Status {
     "fetched": string,
     "total": string,
-    "percentageDone": string
+    "percentageDone": number
 }
 const Admin = () => {
     const [status, setStatus] = useState<Status>();
@@ -92,7 +92,7 @@ const Admin = () => {
             <div>
                 <div
                     className={styles.status}>{status ? `Fetched ${status.fetched} out of ${status.total} movies which
-                    is ${status.percentageDone}%` : "Loading status"}
+                    is ${status.percentageDone.toFixed(2)}%` : "Loading status"}
                 </div>
             </div>
             <div className={styles.buttons}>

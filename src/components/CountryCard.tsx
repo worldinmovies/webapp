@@ -1,33 +1,44 @@
 import React from 'react'
 import styles from './CountryCard.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Movie } from '../Types';
 
 export const CountryCard = (props: { movie: Movie }) => {
-    const navigate = useNavigate();
     const {movie} = props;
     const posterPath = movie.poster_path
         ? `https://image.tmdb.org/t/p/w200/${movie.poster_path}`
         : 'https://www.lasff.com/uploads/2/6/7/4/26743637/poster-not-available_orig.jpg';
 
-    // Done because you mustn't have nestled links.
-    const buttonLink = (e: any) => {
-        if (!e.target.href) {
-            navigate(`/movie/${movie._id}`)
-        }
+    const get_release_date = () => {
+        return movie.release_date ? ` (${movie.release_date.slice(0, 4)})` : null
+    }
+
+    const should_show_eng_title = () => {
+        const result = movie.alternative_titles?.titles
+            ?.find(title => ['GB', 'US', 'AU'].indexOf(title.iso_3166_1) > -1 &&
+                title.title.trim() !== movie.original_title.trim())
+        return result !== undefined
+    }
+
+    const get_title = () => {
+        const alt_title = movie.alternative_titles?.titles
+            ?.find(title => ['GB', 'US', 'AU'].indexOf(title.iso_3166_1) > -1 &&
+                title.title.trim() !== movie.original_title.trim())
+        return alt_title ? <div className={styles.englishTitle}>'{alt_title.title}'</div> : null
     }
 
     return (
         <Link to={`/movie/${movie._id}`} key={movie._id ? movie._id : movie.imdb_id}
               className={styles.movieCard}>
             {movie.poster_path ? <img className={styles.poster}
-                                     src={posterPath}
-                                     alt={movie.en_title}/> : null}
-            <div className={styles.movieCardText}>
-                <div>{movie.original_title} {movie.release_date ? "(" + movie.release_date.slice(0, 4) + ")" : null}</div>
-                {movie.en_title && movie.en_title.trim() !== movie.original_title.trim() ?
-                    <div className={styles.englishTitle}>'{movie.en_title}'</div> : null}
+                                      src={posterPath}
+                                      alt={movie.en_title}/> : null}
+            <div className={should_show_eng_title() ? styles.movieCardText_with_eng_title: styles.movieCardText}>
+                <div>{`${movie.original_title} ${get_release_date()}`}</div>
+                {get_title()}
                 <div>{movie.vote_average.toFixed(1)}</div>
+                <hr/>
+                <div className={styles.overview}>{movie.overview}</div>
             </div>
         </Link>
     )

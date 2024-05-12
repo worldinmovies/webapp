@@ -6,7 +6,7 @@ export interface MyMovieMapState {
 
 export interface Movie {
     credits?: any;
-    alternative_titles?: any;
+    alternative_titles?: {"titles": [{ "iso_3166_1": string, "title": string, "type": string}]};
     spoken_languages?: any;
     production_countries?: any;
     production_companies?: any;
