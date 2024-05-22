@@ -36,3 +36,6 @@ cypress/screenshots
 /playwright/.cache/
 
 .idea
+
+# Sentry Config File
+.env.sentry-build-plugin
