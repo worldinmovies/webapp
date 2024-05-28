@@ -36,7 +36,7 @@ export const CountryCard = (props: { movie: Movie }) => {
             <div className={should_show_eng_title() ? styles.movieCardText_with_eng_title: styles.movieCardText}>
                 <div>{`${movie.original_title} ${get_release_date()}`}</div>
                 {get_title()}
-                <div>{movie.vote_average.toFixed(1)}</div>
+                <div>{movie.vote_average?.toFixed(1)}</div>
                 <hr/>
                 <div className={styles.overview}>{movie.overview}</div>
             </div>
