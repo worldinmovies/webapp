@@ -1,7 +1,7 @@
 # build environment
-FROM node:21-alpine as build
+FROM node:21-alpine AS build
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 COPY package.json package-lock.json tsconfig.json vite.config.ts ./
 
 RUN npm ci --silent
@@ -19,6 +19,6 @@ COPY ./nginx/sites-enabled/app2.conf	/etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-HEALTHCHECK  --interval=1m --timeout=5s --start-period=3s --retries=2 CMD nc -v -w1 localhost 80
+HEALTHCHECK  --interval=1m --timeout=5s --start-period=3s --retries=2 CMD wget --spider --no-verbose 127.0.0.1 >/dev/null 2>&1 || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
