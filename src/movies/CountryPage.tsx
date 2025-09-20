@@ -70,7 +70,7 @@ const CountryPage = inject('movieStore')
         if (toggleRankedMovies === 'best') {
             fetch(`${tmdbUrl}/view/best/${params.countryCode!.toUpperCase()}?skip=${skip}&limit=${limit}${genres}`,
                 {
-                    signal: AbortSignal.timeout(10000),
+                    signal: AbortSignal.timeout(30000),
                 })
                 .then(resp => resp.json())
                 .then(resp => resp.sort(sortMovies()))
