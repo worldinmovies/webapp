@@ -5,11 +5,18 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import browserslistToEsbuild from 'browserslist-to-esbuild';
 
 export default defineConfig({
-    // depending on your application, base can also be "/"
+    css: {
+        preprocessorOptions: {
+          sass: {
+            api: 'modern-compiler'
+          }
+        }
+      },    
     base: '',
     plugins: [react(), viteTsconfigPaths(), sentryVitePlugin({
         org: "david-eriksson",
-        project: "worldinmovies-frontend"
+        project: "worldinmovies-frontend",
+        authToken: process.env.SENTRY_AUTH_TOKEN,
     })],
     build: {
         target: browserslistToEsbuild([
